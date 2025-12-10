@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual DSA • Stunning Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --glass: rgba(255, 255, 255, 0.15);
+            --primary: #5b21b6;
+            --accent: #a78bfa;
+            --success: #10b981;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --text: #1e293b;
+            --shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px 0;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(167,139,250,0.15) 0%, transparent 70%);
+            animation: float 25s infinite linear;
+            pointer-events: none;
+            z-index: -1;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100px, 100px) rotate(360deg); }
+        }
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin: 20px auto;
+            max-width: 1200px;
+            box-shadow: var(--shadow);
+        }
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #e9d5ff, #ddd6fe, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .tagline {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+        .nav-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 16px 36px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(91, 33, 182, 0.4);
+            min-width: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,0.2), transparent);
+            transition: 0.7s;
+        }
+        .nav-btn:hover::before { left: 100%; }
+        .nav-btn:hover {
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 20px 40px rgba(91, 33, 182, 0.6);
+        }
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--success), #059669);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.6);
+            transform: translateY(-4px);
+        }
+        .container {
+            max-width: 1250px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        #log-box {
+            background: linear-gradient(135deg, #fefce8, #fffbeb);
+            border: none;
+            border-left: 8px solid #f59e0b;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 35px;
+            height: 220px;
+            overflow-y: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 16px;
+            color: #92400e;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        .controls {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 35px;
+            border-radius: 28px;
+            margin-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(125, 211, 252, 0.4);
+        }
+        input {
+            padding: 16px 24px;
+            border: 2px solid #e0e7ff;
+            border-radius: 20px;
+            font-size: 17px;
+            width: 160px;
+            text-align: center;
+            background: white;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 6px rgba(167, 139, 250, 0.3);
+            transform: scale(1.08);
+            background: #faf5ff;
+        }
+        button {
+            padding: 16px 36px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 17px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        button:hover {
+            transform: translateY(-6px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .btn-dark { background: linear-gradient(135deg, #6b7280, #374151); }
+        canvas {
+            border-radius: 28px;
+            margin: 20px 0 50px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .hidden { display: none; }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(167,139,250,0.6); }
+            50% { box-shadow: 0 0 40px rgba(167,139,250,0.9); }
+        }
+        .glow { animation: pulse-glow 3s infinite; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Visual DSA</h1>
+        <p class="tagline">Watch Algorithms Dance in Real-Time</p>
+        <div class="nav-container">
+            <button class="nav-btn active" onclick="switchTab('avl')">AVL Tree</button>
+            <button class="nav-btn" onclick="switchTab('heap')">Min Heap</button>
+            <button class="nav-btn" onclick="switchTab('hash')">Hash Table</button>
+            <button class="nav-btn" onclick="switchTab('graph')">Graph Magic</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="log-box">System Ready → Ready to visualize!</div>
+
+        <div id="avl" class="tab-content">
+            <div class="controls">
+                <input type="number" id="avlInput" placeholder="Value">
+                <button onclick="avlOp('insert')">Insert</button>
+                <button class="btn-danger" onclick="avlOp('delete')">Delete</button>
+            </div>
+            <canvas id="avlCanvas" width="1100" height="620"></canvas>
+        </div>
+
+        <div id="heap" class="tab-content hidden">
+            <div class="controls">
+                <input type="number" id="heapInput" placeholder="Value">
+                <button class="btn-success" onclick="heapOp('insert')">Insert</button>
+                <button class="btn-danger" onclick="heapOp('extract')">Extract Min</button>
+            </div>
+            <canvas id="heapCanvas" width="1100" height="620"></canvas>
+        </div>
+
+        <div id="hash" class="tab-content hidden">
+            <div class="controls">
+                <input type="number" id="hashKey" placeholder="Key">
+                <input type="text" id="hashVal" placeholder="Value (Name)">
+                <button class="btn-dark glow" onclick="hashOp()">Insert</button>
+            </div>
+            <canvas id="hashCanvas" width="1100" height="620"></canvas>
+        </div>
+
+        <div id="graph" class="tab-content hidden">
+            <div class="controls">
+                <input type="number" id="vId" placeholder="Vertex ID">
+                <input type="text" id="vName" placeholder="Label">
+                <button onclick="graphAddV()">Add Vertex</button>
+
+                <input type="number" id="eU" placeholder="From">
+                <input type="number" id="eV" placeholder="To">
+                <input type="number" id="eW" placeholder="Weight">
+                <button class="btn-success" onclick="graphAddE()">Add Edge</button>
+
+                <input type="number" id="startId" placeholder="Start Vertex">
+                <button onclick="graphAlgo('bfs')">BFS</button>
+                <button onclick="graphAlgo('dfs')">DFS</button>
+                <button onclick="graphAlgo('prim')">Prim MST</button>
+                <button onclick="graphAlgo('dijkstra')">Dijkstra</button>
+            </div>
+            <canvas id="graphCanvas" width="1100" height="620"></canvas>
+        </div>
+    </div>
+
+    <script>
+        var Module = {
+            onRuntimeInitialized: function() {
+                log("WebAssembly Loaded Successfully.");
+                init();
+            },
+            print: function(text) {
+                log("C++ Output: " + text);
+            }
+        };
+
+        function log(msg) {
+            const box = document.getElementById('log-box');
+            const time = new Date().toLocaleTimeString();
+            box.innerHTML += `<div style="padding:8px 0; color:#92400e; font-weight:500;">
+                <span style="color:#f59e0b;">[${time}]</span> ${msg}
+            </div>`;
+            box.scrollTop = box.scrollHeight;
+        }
+      
+        let avl, heap, hash, graph;
+        let _avlIns, _avlDel, _getAvl;
+        let _heapIns, _heapExt, _getHeap;
+        let _hashIns, _getHash;
+        let _graphV, _graphE, _getGraph;
+
+        function init() {
+            avl = Module.cwrap('createAVL', 'number', [])();
+            _avlIns = Module.cwrap('avlInsert', null, ['number','number']);
+            _avlDel = Module.cwrap('avlDelete', null, ['number','number']);
+            _getAvl = Module.cwrap('getAVLData', 'string', ['number']);
+
+            heap = Module.cwrap('createHeap', 'number', ['number'])(100);
+            _heapIns = Module.cwrap('heapInsert', null, ['number','number']);
+            _heapExt = Module.cwrap('heapExtract', 'number', ['number']);
+            _getHeap = Module.cwrap('getHeapData', 'string', ['number']);
+
+            hash = Module.cwrap('createSC', 'number', ['number'])(11);
+            _hashIns = Module.cwrap('scInsert', null, ['number','number','string']);
+            _getHash = Module.cwrap('getHashData', 'string', ['number']);
+
+            graph = Module.cwrap('createGraph', 'number', [])();
+            _graphV = Module.cwrap('addVertex', null, ['number','number','string']);
+            _graphE = Module.cwrap('addEdge', null, ['number','number','number','number']);
+            _getGraph = Module.cwrap('getGraphData', 'string', ['number']);
+        }
+
+        function switchTab(id) {
+            document.querySelectorAll('.tab-content').forEach(d => d.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            log("Switched to " + id.toUpperCase());
+        }
+
+        // --- DRAWING LOGIC ---
+        // AVL
+        function avlOp(op) {
+            let v = parseInt(document.getElementById('avlInput').value);
+            if(isNaN(v)) return;
+            let oldData = JSON.parse(_getAvl(avl));
+            if(op=='insert') _avlIns(avl, v); else _avlDel(avl, v);
+            let data = JSON.parse(_getAvl(avl));
+            log(op.charAt(0).toUpperCase() + op.slice(1) + " " + v + " completed. Check C++ output for rotations.");
+            drawTree(data, 'avlCanvas');
+        }
+
+        function drawTree(node, cvsId, x=550, y=80, off=220) {
+            const ctx = document.getElementById(cvsId).getContext('2d');
+            if(x===550 && y===80) ctx.clearRect(0,0,1100,620);
+            if(!node) return;
+           
+            ctx.beginPath(); ctx.arc(x, y, 28, 0, 6.28);
+            ctx.fillStyle = node.h > 0 ? '#fca5a5' : node.h < 0 ? '#93c5fd' : '#86efac';
+            ctx.fill(); ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 3; ctx.stroke();
+
+            ctx.fillStyle="white"; ctx.textAlign="center";
+            ctx.font="bold 18px Poppins"; ctx.fillText(node.k, x, y+6);
+            ctx.font="12px Poppins"; ctx.fillStyle = "#1e40af";
+            ctx.fillText("BF:"+node.h, x, y+42);
+
+            if(node.l) {
+                ctx.beginPath(); ctx.moveTo(x, y+28); ctx.lineTo(x-off, y+100); ctx.strokeStyle = '#3b82f6'; ctx.lineWidth=4; ctx.stroke();
+                drawTree(node.l, cvsId, x-off, y+100, off*0.6);
+            }
+            if(node.r) {
+                ctx.beginPath(); ctx.moveTo(x, y+28); ctx.lineTo(x+off, y+100); ctx.strokeStyle = '#10b981'; ctx.lineWidth=4; ctx.stroke();
+                drawTree(node.r, cvsId, x+off, y+100, off*0.6);
+            }
+        }
+
+        // HEAP
+        function heapOp(op) {
+            if(op=='insert') {
+                let v = parseInt(document.getElementById('heapInput').value);
+                if(!isNaN(v)) _heapIns(heap, v);
+            } else {
+                let v = _heapExt(heap);
+                log("Extracted: " + v);
+            }
+            let arr = JSON.parse(_getHeap(heap));
+            log("Current heap array: " + arr.join(", "));
+            drawHeap(arr);
+        }
+
+        function drawHeap(arr) {
+            const ctx = document.getElementById('heapCanvas').getContext('2d');
+            ctx.clearRect(0,0,1100,620);
+            if(arr.length===0) return;
+
+            const drawNode = (i, x, y, off) => {
+                if(i >= arr.length) return;
+                ctx.beginPath(); ctx.arc(x, y, 28, 0, 6.28);
+                ctx.fillStyle="#d4edda"; ctx.fill();
+                ctx.strokeStyle="#16a34a"; ctx.lineWidth=3; ctx.stroke();
+                ctx.fillStyle="#166534"; ctx.font="bold 20px Poppins";
+                ctx.textAlign="center"; ctx.fillText(arr[i], x, y+7);
+
+                let l = 2*i+1, r = 2*i+2;
+                if(l < arr.length) {
+                    ctx.beginPath(); ctx.moveTo(x, y+28); ctx.lineTo(x-off, y+110); ctx.strokeStyle="#16a34a"; ctx.lineWidth=4; ctx.stroke();
+                    drawNode(l, x-off, y+110, off/2);
+                }
+                if(r < arr.length) {
+                    ctx.beginPath(); ctx.moveTo(x, y+28); ctx.lineTo(x+off, y+110); ctx.strokeStyle="#16a34a"; ctx.lineWidth=4; ctx.stroke();
+                    drawNode(r, x+off, y+110, off/2);
+                }
+            };
+            drawNode(0, 550, 80, 240);
+        }
+
+        // HASH
+        function hashOp() {
+            let k = parseInt(document.getElementById('hashKey').value);
+            let v = document.getElementById('hashVal').value;
+            if(!isNaN(k)) {
+                _hashIns(hash, k, v);
+                let data = JSON.parse(_getHash(hash));
+                drawHash(data);
+            }
+        }
+
+        function drawHash(table) {
+            const ctx = document.getElementById('hashCanvas').getContext('2d');
+            ctx.clearRect(0,0,1100,620);
+            ctx.font = "18px Poppins";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            table.forEach((bucket, i) => {
+                let y = 80 + i * 60;
+
+                ctx.fillStyle = '#e0e7ff';
+                ctx.fillRect(80, y, 60, 45);
+                ctx.strokeStyle = '#818cf8'; ctx.lineWidth = 3;
+                ctx.strokeRect(80, y, 60, 45);
+                ctx.fillStyle = '#4c1d95'; ctx.fillText(i, 110, y+22);
+
+                let xStart = 180;
+                bucket.forEach((val, j) => {
+                    let x = xStart + j * 160;
+                    if (j > 0) {
+                        ctx.beginPath();
+                        ctx.moveTo(xStart + j*160 - 100, y+22);
+                        ctx.lineTo(x - 40, y+22);
+                        ctx.strokeStyle = '#c084fc'; ctx.lineWidth = 4; ctx.stroke();
+                        ctx.beginPath();
+                        ctx.moveTo(x-40, y+22); ctx.lineTo(x-50, y+15); ctx.lineTo(x-50, y+29); ctx.fillStyle = '#c084fc'; ctx.fill();
+                    } else {
+                        ctx.beginPath(); ctx.moveTo(140, y+22); ctx.lineTo(x, y+22);
+                        ctx.strokeStyle = '#c084fc'; ctx.lineWidth = 4; ctx.stroke();
+                    }
+
+                    ctx.fillStyle = '#f3e8ff';
+                    ctx.fillRect(x, y, 120, 45);
+                    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 3;
+                    ctx.strokeRect(x, y, 120, 45);
+                    ctx.fillStyle = '#6b21a8'; ctx.fillText(val, x+60, y+22);
+                });
+            });
+        }
+
+        // GRAPH
+        function graphAddV() {
+            let id = parseInt(document.getElementById('vId').value);
+            let name = document.getElementById('vName').value;
+            if(!isNaN(id)) {
+                _graphV(graph, id, name);
+                renderGraph();
+            }
+        }
+        function graphAddE() {
+            let u = parseInt(document.getElementById('eU').value);
+            let v = parseInt(document.getElementById('eV').value);
+            let w = parseInt(document.getElementById('eW').value);
+            if(!isNaN(u) && !isNaN(v) && !isNaN(w)) {
+                _graphE(graph, u, v, w);
+                renderGraph();
+            }
+        }
+
+        function graphAlgo(algo) {
+            let start = parseInt(document.getElementById('startId').value);
+            if (isNaN(start)) return;
+            let data = JSON.parse(_getGraph(graph));
+            if (!data.nodes.includes(start)) {
+                log("Start vertex not found");
+                return;
+            }
+            log(`Running ${algo.toUpperCase()} from ${start}`);
+            if (algo === 'bfs') animateBFS(start);
+            else if (algo === 'dfs') animateDFS(start);
+            else if (algo === 'prim') animatePrim(start);
+            else if (algo === 'dijkstra') animateDijkstra(start);
+        }
+
+        function buildAdj(data) {
+            let adj = {};
+            data.nodes.forEach(id => adj[id] = []);
+            data.edges.forEach(e => {
+                adj[e.u].push({to: e.v, w: e.w});
+                adj[e.v].push({to: e.u, w: e.w});
+            });
+            return adj;
+        }
+
+        function animateBFS(start) {
+            let data = JSON.parse(_getGraph(graph));
+            let adj = buildAdj(data);
+            let visited = new Set();
+            let queue = [start];
+            visited.add(start);
+            let delay = 1000;
+            function step() {
+                if (queue.length === 0) {
+                    renderGraph({visited});
+                    log("BFS completed");
+                    return;
+                }
+                let curr = queue.shift();
+                log(`Visiting ${curr}`);
+                renderGraph({highlight: curr, visited, queue: queue.slice()});
+                for (let neigh of adj[curr]) {
+                    if (!visited.has(neigh.to)) {
+                        visited.add(neigh.to);
+                        queue.push(neigh.to);
+                    }
+                }
+                setTimeout(step, delay);
+            }
+            step();
+        }
+
+        function animateDFS(start) {
+            let data = JSON.parse(_getGraph(graph));
+            let adj = buildAdj(data);
+            let visited = new Set();
+            let stack = [start];
+            visited.add(start);
+            let delay = 1000;
+            function step() {
+                if (stack.length === 0) {
+                    renderGraph({visited});
+                    log("DFS completed");
+                    return;
+                }
+                let curr = stack.pop();
+                log(`Visiting ${curr}`);
+                renderGraph({highlight: curr, visited, stack: stack.slice()});
+                for (let neigh of adj[curr].reverse()) {
+                    if (!visited.has(neigh.to)) {
+                        visited.add(neigh.to);
+                        stack.push(neigh.to);
+                    }
+                }
+                setTimeout(step, delay);
+            }
+            step();
+        }
+
+        function animatePrim(start) {
+            let data = JSON.parse(_getGraph(graph));
+            let adj = buildAdj(data);
+            let nodes = data.nodes;
+            let dist = {};
+            let parent = {};
+            let visited = new Set();
+            nodes.forEach(n => dist[n] = Infinity);
+            dist[start] = 0;
+            let treeEdges = [];
+            let delay = 1500;
+            function getMin() {
+                let minD = Infinity, minN = null;
+                for (let n of nodes) {
+                    if (!visited.has(n) && dist[n] < minD) {
+                        minD = dist[n];
+                        minN = n;
+                    }
+                }
+                return minN;
+            }
+            function step() {
+                let u = getMin();
+                if (u === null) {
+                    renderGraph({treeEdges, visited, dist});
+                    log("Prim's completed");
+                    return;
+                }
+                visited.add(u);
+                log(`Adding ${u} to MST, dist ${dist[u]}`);
+                if (parent[u] !== undefined) {
+                    treeEdges.push({u: parent[u], v: u});
+                }
+                renderGraph({highlight: u, visited, treeEdges, dist});
+                for (let neigh of adj[u]) {
+                    let v = neigh.to;
+                    let w = neigh.w;
+                    if (!visited.has(v) && w < dist[v]) {
+                        dist[v] = w;
+                        parent[v] = u;
+                        log(`Updated dist[${v}] = ${w}`);
+                    }
+                }
+                setTimeout(step, delay);
+            }
+            step();
+        }
+
+        function animateDijkstra(start) {
+            let data = JSON.parse(_getGraph(graph));
+            let adj = buildAdj(data);
+            let nodes = data.nodes;
+            let dist = {};
+            let parent = {};
+            let visited = new Set();
+            nodes.forEach(n => dist[n] = Infinity);
+            dist[start] = 0;
+            let shortestPathEdges = [];
+            let delay = 1500;
+            function getMin() {
+                let minD = Infinity, minN = null;
+                for (let n of nodes) {
+                    if (!visited.has(n) && dist[n] < minD) {
+                        minD = dist[n];
+                        minN = n;
+                    }
+                }
+                return minN;
+            }
+            function step() {
+                let u = getMin();
+                if (u === null) {
+                    renderGraph({visited, dist, treeEdges: shortestPathEdges});
+                    log("Dijkstra's completed");
+                    return;
+                }
+                visited.add(u);
+                if (parent[u] !== undefined) {
+                    shortestPathEdges.push({u: parent[u], v: u});
+                }
+                log(`Relaxing from ${u}, dist ${dist[u]}`);
+                renderGraph({highlight: u, visited, dist, treeEdges: shortestPathEdges});
+                for (let neigh of adj[u]) {
+                    let v = neigh.to;
+                    let w = neigh.w;
+                    if (dist[u] + w < dist[v]) {
+                        dist[v] = dist[u] + w;
+                        parent[v] = u;
+                        log(`Updated dist[${v}] = ${dist[v]}`);
+                    }
+                }
+                setTimeout(step, delay);
+            }
+            step();
+        }
+
+        function renderGraph(options = {}) {
+            let raw = _getGraph(graph);
+            let data = JSON.parse(raw);
+            const ctx = document.getElementById('graphCanvas').getContext('2d');
+            ctx.clearRect(0,0,1100,620);
+            const nodes = data.nodes;
+            const edges = data.edges;
+            const cx = 550, cy = 300, r = 220;
+            let coords = {};
+            nodes.forEach((id, i) => {
+                let ang = (i / nodes.length) * Math.PI * 2;
+                coords[id] = { x: cx + Math.cos(ang)*r, y: cy + Math.sin(ang)*r };
+            });
+
+            edges.forEach(e => {
+                let p1 = coords[e.u], p2 = coords[e.v];
+                if(p1 && p2) {
+                    ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
+                    let color = '#94a3b8';
+                    if (options.treeEdges && options.treeEdges.some(te => (te.u === e.u && te.v === e.v) || (te.u === e.v && te.v === e.u))) {
+                        color = '#10b981';
+                    }
+                    ctx.strokeStyle = color; ctx.lineWidth=4; ctx.stroke();
+                    ctx.fillStyle="#dc2626"; ctx.font="bold 16px Poppins"; ctx.fillText(e.w, (p1.x+p2.x)/2 + 8, (p1.y+p2.y)/2 + 8);
+                }
+            });
+
+            nodes.forEach(id => {
+                let p = coords[id];
+                ctx.beginPath(); ctx.arc(p.x, p.y, 32, 0, Math.PI*2);
+                let fill = '#1e293b';
+                if (options.highlight === id) fill = '#ef4444';
+                else if (options.visited && options.visited.has(id)) fill = '#3b82f6';
+                ctx.fillStyle = fill; ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth=4; ctx.stroke();
+                ctx.fillStyle="white"; ctx.font="bold 20px Poppins"; ctx.textAlign="center";
+                ctx.fillText(id, p.x, p.y+8);
+                if (options.dist && options.dist[id] !== undefined) {
+                    let dtext = options.dist[id] === Infinity ? '∞' : options.dist[id];
+                    ctx.fillStyle="#16a34a"; ctx.font="16px Poppins";
+                    ctx.fillText(dtext, p.x, p.y + 50);
+                }
+            });
+
+            if (options.queue || options.stack) {
+                let structure = options.queue || options.stack;
+                let label = options.queue ? 'Queue:' : 'Stack:';
+                let y = 520;
+                ctx.font = "20px Poppins";
+                ctx.fillStyle = "#1e40af";
+                ctx.textAlign = "left";
+                ctx.fillText(label, 60, y);
+                structure.forEach((item, i) => {
+                    let x = 160 + i * 80;
+                    ctx.fillStyle = '#e0e7ff';
+                    ctx.fillRect(x, y - 20, 65, 45);
+                    ctx.strokeStyle = '#818cf8';
+                    ctx.strokeRect(x, y - 20, 65, 45);
+                    ctx.fillStyle = '#4c1d95';
+                    ctx.fillText(item, x + 32.5, y + 5);
+                });
+            }
+        }
+    </script>
+    <script src="combined_dsa.js"></script>
+</body>
+</html>
