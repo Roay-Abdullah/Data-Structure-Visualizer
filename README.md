@@ -80,7 +80,7 @@ Because this project uses WebAssembly, it requires a local web server to serve t
 1.  **Clone the repository:**
 
     ```bash
-    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+    git clone [https://github.com/Roay-Abdullah/Data-Structure-Visualizer.git](https://github.com/Roay-Abdullah/Data-Structure-Visualizer.git)
     cd your-repo-name
     ```
 
@@ -96,16 +96,4 @@ Because this project uses WebAssembly, it requires a local web server to serve t
 3.  **Access the Application:**
     Open your browser and navigate to `http://localhost:8000` (or the port provided by your server).
 
------
 
-## 📸 Future Improvements
-
-  * Add Depth-First Search (DFS) for Graphs.
-  * Implement Red-Black Trees.
-  * Add step-by-step animation controls (Pause/Play).
-
------
-
-## 📜 License
-
-This project is for educational purposes.
