@@ -8,7 +8,7 @@ A high-performance, interactive web application that visualizes complex Data Str
 ## 👥 Group Members
 This project was developed as a Data Structures group project by:
 
-* **(Me)Roy Muhammad Abdullah**
+* **Roy Muhammad Abdullah (Me)**
 * **Abdul Hayee Kamran**
 * **Tasleem Ahmad**
 
